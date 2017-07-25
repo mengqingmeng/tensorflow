@@ -2,7 +2,9 @@
 import tensorflow as tf
 import numpy as np
 from PIL import Image
+from tensorflow.examples.tutorials.mnist import input_data
 
+mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
 x = tf.placeholder(tf.float32, shape=[None, 784]) #输入
 y_ = tf.placeholder(tf.float32, shape=[None, 10]) #输出
 W = tf.Variable(tf.zeros([784,10])) #权重 变量
@@ -20,12 +22,13 @@ with tf.Session() as sess:
     print("v2:", sess.run(v2))
     print("Model Restored")
     #
-    im = Image.open("test_model_image/0_0.png")
+    im = Image.open("test_model_image/2_0.png")
     im = im.convert("L")
     data = im.getdata()
     data = np.array(data).reshape(1,784)
     a = (data-np.min(data))/(np.max(data)-np.min(data))
     result = sess.run(y, feed_dict={x: a})
     print(result)
+    print(mnist.test.images[0].shape)
 
 

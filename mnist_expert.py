@@ -1,8 +1,8 @@
 #condig=utf-8
 import tensorflow as tf
-from tensorflow.examples.tutorials.mnist import input_data
 import numpy as np
 from PIL import Image
+from tensorflow.examples.tutorials.mnist import input_data
 
 mnist = input_data.read_data_sets('MNIST_data', one_hot=True)   #加载 training, validation, and testing sets
 sess = tf.InteractiveSession()  #通过sessiong与后端计算连接
@@ -100,3 +100,4 @@ with tf.Session() as sess:
   print("v2:", sess.run(v2))
   saver_path = saver.save(sess, "save/model.ckpt")  # 将模型保存到save/model.ckpt文件
   print("Model saved in file:", saver_path)
+
