@@ -3,7 +3,8 @@ import tensorflow as tf
 import numpy as np
 from PIL import Image
 from tensorflow.examples.tutorials.mnist import input_data
-
+v1 = tf.Variable(tf.random_normal([1, 2]), name="v1")
+v2 = tf.Variable(tf.random_normal([2, 3]), name="v2")
 mnist = input_data.read_data_sets('MNIST_data', one_hot=True)   #加载 training, validation, and testing sets
 sess = tf.InteractiveSession()  #通过sessiong与后端计算连接
 
@@ -27,6 +28,10 @@ for _ in range(1000):
 correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 print(accuracy.eval(feed_dict={x: mnist.test.images, y_: mnist.test.labels}))
+
+saver = tf.train.Saver() # 声明tf.train.Saver类用于保存模型
+saver_path = saver.save(sess, "save/model.ckpt")  # 将模型保存到save/model.ckpt文件
+print("Model saved in file:", saver_path)
 
 print('-----------------使用多层卷积网络------------------')
 
@@ -77,10 +82,8 @@ cross_entropy = tf.reduce_mean(
 train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
 correct_prediction = tf.equal(tf.argmax(y_conv, 1), tf.argmax(y_, 1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-v1 = tf.Variable(tf.random_normal([1, 2]), name="v1")
-v2 = tf.Variable(tf.random_normal([2, 3]), name="v2")
+
 init_op = tf.global_variables_initializer() # 初始化全部变量
-saver = tf.train.Saver() # 声明tf.train.Saver类用于保存模型
 
 with tf.Session() as sess:
   sess.run(tf.global_variables_initializer())
@@ -98,6 +101,6 @@ with tf.Session() as sess:
   sess.run(init_op)
   print("v1:", sess.run(v1))  # 打印v1、v2的值一会读取之后对比
   print("v2:", sess.run(v2))
-  saver_path = saver.save(sess, "save/model.ckpt")  # 将模型保存到save/model.ckpt文件
-  print("Model saved in file:", saver_path)
+
+
 
